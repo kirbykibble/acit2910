@@ -16,7 +16,7 @@ class Welcome extends Component {
                         <div className="sub">We bet you won’t find better</div>
                     </div>
                     <div className="welcome-bg-button-span">
-                        <Link to="order" className="welcome-bg-button">Click Here to Start Ordering</Link>
+                        <Link to="/order" onclick="toOrder()" className="welcome-bg-button" id="welcomeBut">Click Here to Start Ordering</Link>
                     </div>
                 </div>
 

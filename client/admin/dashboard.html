@@ -190,39 +190,6 @@
         //Is the restaurant open functionality
         restBut = document.getElementById("restaurantOpenClose");
         
-        restBut.addEventListener("mouseover", function() {
-            checkRestStatus("Close Restaurant", "Open Restaurant", "#5cb85c", "d9534f");
-            if(restStatus) {
-                menuChange("Close Restaurant");
-            }
-            else if (!restStatus) {
-                menuChange("Open Restaurant");
-            }
-            else {
-                menuChange("Error", "white");
-            }
-        });
-        restBut.addEventListener("mouseout", function() {
-            checkRestStatus("Restaurant is Open", "Restaurant is Closed",  "#5cb85c", "#d9534f");
-        });
-        
-        restBut.addEventListener("click", function() {
-           console.log("working");
-           $.ajax({
-              url: "/restStatChange",
-               type: "POST",
-               data: {
-                   status: restStatus
-               },
-               success: function(response) {
-                  console.log(response)
-                  restStatus = response;
-                  console.log(restStatus)
-                  checkRestStatus("Restaurant is Open", "Restaurant is Closed",  "#5cb85c", "#d9534f");
-               }
-           });
-        });
-        
         $.ajax({
            url: "/isOpen",
             type: "POST",
@@ -232,7 +199,33 @@
             }
         });
         
+        restBut.addEventListener("mouseover", function() {
+            checkRestStatus("Close Restaurant", "Open Restaurant", "#5cb85c", "d9534f");
+        });
+        restBut.addEventListener("mouseout", function() {
+            checkRestStatus("Restaurant is Open", "Restaurant is Closed",  "#5cb85c", "#d9534f");
+        });
+        
+        restBut.addEventListener("click", function() {
+           console.log("working");
+           console.log("Current status: " + restStatus);
+           $.ajax({
+              url: "/restStatChange",
+               type: "POST",
+               data: {
+                   status: restStatus
+               },
+               success: function(response) {
+                  console.log("response: " + response);
+                  restStatus = response;
+                  checkRestStatus("Restaurant is Open", "Restaurant is Closed",  "#5cb85c", "#d9534f");
+               }
+           });
+        });
+        
+        
         function checkRestStatus(textA, textB, colorA, colorB) {
+            restStatus = Boolean(restStatus);
             if(restStatus) {
                 menuChange(textA, colorA);
             }

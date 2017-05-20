@@ -104,13 +104,6 @@ app.get("/orderview", function(req,resp) {
 
 // is restaurant open ajax call
 app.post("/isOpen", function(req, resp) {
-   resp.send(restIsOpen);
-});
-app.post("/restStatChange", function(req, resp) {
-   console.log("working");
-   console.log(req.body.status);
-   console.log(restIsOpen);
-   restIsOpen = req.body.status; 
    console.log(restIsOpen);
    resp.send(restIsOpen);
 });
@@ -140,9 +133,7 @@ function getMenuItems() {
 exports.getMenuItems = getMenuItems(); // DL - export the function to be used in "/routes/admin.js"
 
 app.post("/menu-items", function(req, resp){
-
     resp.send(dagobah.menuItems);
-
 });
 
 //add app.get before this call
@@ -415,6 +406,26 @@ io.on("connection", function(socket){
     socket.on("get constraints", function () {
         socket.emit("send constraints", kitchen.maxItemPerOrder, kitchen.maxQuantityPerItem);
     });
+    
+    app.post("/restStatChange", function(req, resp) {
+       console.log("recieved currentStatus: " + req.body.status);
+       if(req.body.status == "true") {
+           restIsOpen = false;
+           socket.emit("restaurantStatus", restIsOpen);
+           resp.send(false);
+       }
+       else if (req.body.status == "false") {
+           restIsOpen = true;
+           socket.emit("restaurantStatus", restIsOpen);
+           resp.send(true);
+       }
+       else {
+           console.log("error");
+           resp.send(null);
+       }
+    });
+
+    
 });
 
 
