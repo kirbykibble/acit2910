@@ -3,6 +3,11 @@ $(document).ready(function() {
     
     console.log("ready!");
     var startButton = document.getElementById("welcomeBut");
+    var closedDiv = document.getElementById("closedStuff");
+    
+//    startButton.addEventListener("click", function() {
+//       window.location.href = "/order"; 
+//    });
     
     $.ajax({
         url: "/isOpen",
@@ -31,11 +36,11 @@ $(document).ready(function() {
         }
     }
     function restaurantOpen() {
-        startButton.innerHTML = "Click Here to Start Ordering";
-        startButton.href = "/order";
+        closedDiv.style.display = "none";
+        startButton.style.display = "";
     }
     function restaurantClose() {
-        startButton.innerHTML = "We're sorry, but we are closed. Please try again later!";
-        startButton.href = "null";
+        closedDiv.style.display = "";
+        startButton.style.display = "none";
     }
 });
